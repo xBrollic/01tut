@@ -1,40 +1,47 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Content = () => {
-  const [name, setName] = useState("Bobbo");
+  const [items, setItems] = useState([
+    {
+      id: 1,
+      checked: false,
+      item: "Ett gram zutt och en beshlik",
+    },
+    {
+      id: 2,
+      checked: false,
+      item: "Jannes Hennesy",
+    },
+    {
+      id: 3,
+      checked: false,
+      item: "Lundgrens farsta zutt",
+    },
+  ]);
 
-  const [count, setCount] = useState(0);
-
-  const navigate = useNavigate();
-  const handleNameChange = () => {
-    const names = ["Gustav", "Bobbo", "Linkan"];
-    const int = Math.floor(Math.random() * 3);
-    setName(names[int]);
-  };
-
-  const handleClick = () => {
-    setCount(count + 1);
-    console.log(count);
-  };
-
-  const handleClick2 = () => {
-    console.log(count);
-  };
-
-  const handleClick3 = (e) => {
-    console.log(e.target.innerText);
+  const handleCheck = (id) => {
+    const listItems = items.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+    setItems(listItems);
   };
 
   return (
     <main>
-      <p className="text" onDoubleClick={handleClick}>
-        Hello {name}!
-      </p>
-      <button onClick={handleNameChange}>Change name</button>
-      <button onClick={handleClick}>Click it</button>
-      <button onClick={handleClick2}>Click it</button>
-      <button onClick={() => navigate("/test")}>Navigera</button>
+      <ul>
+        {items.map((item) => (
+          <li className="item" key={item.id}>
+            <input
+              type="checkbox"
+              onChange={() => handleCheck(item.id)}
+              checked={item.checked}
+            />
+            <label>{item.item}</label>
+            <FaTrashAlt role="button" tabIndex="0" />
+          </li>
+        ))}
+      </ul>
     </main>
   );
 };
